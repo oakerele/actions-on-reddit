@@ -1,0 +1,54 @@
+{
+  "actions": [
+    {
+      "name": "MAIN",
+      "intent": {
+        "name": "actions.intent.MAIN",
+        "trigger": {
+          "queryPatterns": [
+            "Talk to reddit home",
+            "Talk to reddit",
+            "Ask reddit home",
+            "Ask reddit"
+          ]
+        }
+      },
+      "fulfillment": {
+        "conversationName": "actions-on-reddit"
+      }
+    },
+    {
+      "name": "TRENDING_REDDIT",
+      "intent": {
+        "name": "trending_reddit",
+        "parameters": [
+          {
+            "name": "no_of_posts",
+            "type": "SchemaOrg_Number"
+          }
+        ],
+        "trigger": {
+          "queryPatterns": [
+            "what is trending on reddit",
+            "what is popular on reddit",
+            "(give me)? popular reddit posts",
+            "what are the top $SchemaOrg_Number:no_of_posts posts that are trending on reddit"
+          ]
+        }
+      },
+      "fulfillment": {
+        "conversationName": "trending-reddit"
+      }
+    }
+  ],
+  "conversations": {
+    "actions-on-reddit": {
+      "name": "actions-on-reddit",
+      "url": "https://us-central1-actions-on-reddit.cloudfunctions.net/getRedditActions"
+    },
+    "trending-reddit": {
+      "name": "trending-reddit",
+      "url": "https://us-central1-actions-on-reddit.cloudfunctions.net/getTrendingReddit"
+    }
+  }
+}
