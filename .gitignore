@@ -1,6 +1,7 @@
 node_modules/
 
 config.json
+creds.data
 
 **/build/**/*
 .env
