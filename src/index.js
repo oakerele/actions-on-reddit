@@ -9,7 +9,7 @@ var functions = shared.functions;
 
 const ActionsSdkApp = actions.ActionsSdkApp;
 
-const welcomeText = 'Welcome to Actions on Reddit! You can ask for what\'s trending on reddit ' +
+const welcomeText = 'Welcome to Sub Lurker! You can ask for what\'s trending on reddit or on a specific sub reddit ' +
   'and so much more. So what would you like me to do today?';
 
 // Handles the initial interaction
@@ -19,12 +19,18 @@ const mainIntent = (assistant) => {
   assistant.ask(inputPrompt);
 };
 
+// Handles error catching
+const catchIntent = (assistant) => {
+  assistant.tell("Stay groovy!");
+};
+
 // Entry point for Actions on Reddit
 exports.getRedditActions = functions.https.onRequest((req, res) => {
   const assistant = new ActionsSdkApp({ request: req, response: res });
   const actionMap = new Map();
 
   actionMap.set(assistant.StandardIntents.MAIN, mainIntent);
+  actionMap.set(assistant.StandardIntents.TEXT, catchIntent);
 
   assistant.handleRequest(actionMap);
 });

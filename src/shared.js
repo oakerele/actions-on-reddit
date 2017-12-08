@@ -7,6 +7,7 @@ var snoowrap = require('snoowrap');
 
 mainAdmin.initializeApp(mainFunctions.config().firebase);
 
+// TODO: Set up a DEBUG environment to test locally. process.env.DEBUG
 // const mainReddit = new snoowrap({
 //   userAgent: 'Google Assistant App by /u/thatwolfisthetits',
 //   clientId: config.reddit.id,
@@ -14,6 +15,7 @@ mainAdmin.initializeApp(mainFunctions.config().firebase);
 //   refreshToken: config.reddit.refresh_token,
 // });
 
+// Deploy with this
 const mainReddit = new snoowrap({
   userAgent: 'Google Assistant App by /u/thatwolfisthetits',
   clientId: mainFunctions.config().reddit.id,

@@ -13,6 +13,7 @@ const ActionsSdkApp = actions.ActionsSdkApp;
 let subredditHandler = (assistant) => {
   const noOfPosts = assistant.getArgument(ARG_NO_OF_POSTS) || 10;
   const subreddit = assistant.getArgument(ARG_SUBREDDIT) || 'all';
+
   return reddit.getHot(subreddit, { limit: 50 })
     .then(data => data.map(data => {
       // Map the array to only return the fields below for each element
@@ -51,7 +52,7 @@ let subredditHandler = (assistant) => {
       assistant.tell(message);
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       assistant.tell("Something went wrong, please try again later!");
     })
 }
@@ -63,4 +64,7 @@ exports.getTopSubReddit = functions.https.onRequest((req, res) => {
   actionMap.set(ACTION_SUBREDDIT, subredditHandler);
 
   assistant.handleRequest(actionMap);
+  // subredditHandler().then(data => {
+  //   res.send(data);
+  // });
 });

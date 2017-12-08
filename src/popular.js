@@ -62,7 +62,7 @@ let popularHandler = (assistant) => {
     })
     .catch(err => {
       assistant.tell("Something went wrong, please try again later!");
-      console.log(err);
+      console.error(err);
       return err;
     })
 }
