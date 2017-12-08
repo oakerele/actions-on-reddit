@@ -5,12 +5,6 @@
       "intent": {
         "name": "actions.intent.MAIN",
         "trigger": {
-          "queryPatterns": [
-            "Talk to reddit home",
-            "Talk to reddit",
-            "Ask reddit home",
-            "Ask reddit"
-          ]
         }
       },
       "fulfillment": {
@@ -18,9 +12,9 @@
       }
     },
     {
-      "name": "TRENDING_REDDIT",
+      "name": "POPULAR_REDDIT",
       "intent": {
-        "name": "trending_reddit",
+        "name": "popular_reddit",
         "parameters": [
           {
             "name": "no_of_posts",
@@ -29,15 +23,43 @@
         ],
         "trigger": {
           "queryPatterns": [
-            "what is trending on reddit",
-            "what is popular on reddit",
-            "(give me)? popular reddit posts",
-            "what are the top $SchemaOrg_Number:no_of_posts posts that are trending on reddit"
+            "what's up",
+            "what's going on",
+            "what is trending",
+            "what is popular",
+            "(give me)? popular posts",
+            "what are the top $SchemaOrg_Number:no_of_posts posts that are trending"
           ]
         }
       },
       "fulfillment": {
-        "conversationName": "trending-reddit"
+        "conversationName": "popular-reddit"
+      }
+    },
+    {
+      "name": "TOP_SUBREDDIT",
+      "intent": {
+        "name": "top_subreddit",
+        "parameters": [
+          {
+            "name": "no_of_posts",
+            "type": "SchemaOrg_Number"
+          },
+          {
+            "name": "subreddit",
+            "type": "SchemaOrg_Text"
+          }
+        ],
+        "trigger": {
+          "queryPatterns": [
+            "what is trending on r slash $SchemaOrg_Text:subreddit",
+            "(give me)? (what is)? popular (on)? r slash $SchemaOrg_Text:subreddit (posts)?",
+            "(what are the)? top $SchemaOrg_Number:no_of_posts from r slash $SchemaOrg_Text:subreddit"
+          ]
+        }
+      },
+      "fulfillment": {
+        "conversationName": "top-subreddit"
       }
     }
   ],
@@ -46,9 +68,13 @@
       "name": "actions-on-reddit",
       "url": "https://us-central1-actions-on-reddit.cloudfunctions.net/getRedditActions"
     },
-    "trending-reddit": {
-      "name": "trending-reddit",
-      "url": "https://us-central1-actions-on-reddit.cloudfunctions.net/getTrendingReddit"
+    "popular-reddit": {
+      "name": "popular-reddit",
+      "url": "https://us-central1-actions-on-reddit.cloudfunctions.net/getPopularReddit"
+    },
+    "top-subreddit": {
+      "name": "top-subreddit",
+      "url": "https://us-central1-actions-on-reddit.cloudfunctions.net/getTopSubReddit"
     }
   }
 }

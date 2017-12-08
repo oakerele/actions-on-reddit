@@ -1,6 +1,6 @@
 ## Actions on Reddit
 
-### Start each command by `talk to reddit` or `talk to snoo`
+### Start each command by `talk to reddit` or `ask reddit home`
 
 What it can do:
 

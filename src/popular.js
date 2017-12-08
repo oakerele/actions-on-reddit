@@ -1,38 +1,22 @@
 'use strict';
 
-var snoowrap = require('snoowrap');
-var _ = require('lodash');
-
 var shared = require('./shared');
-var config = require('./config');
 var actions = shared.actions;
 var functions = shared.functions;
+var reddit = shared.reddit;
 
-const ACTION_POPULAR = 'trending_reddit';
+const ACTION_POPULAR = 'popular_reddit';
 const ARG_NO_OF_POSTS = 'no_of_posts';
 const ActionsSdkApp = actions.ActionsSdkApp;
 
-// const reddit = new snoowrap({
-//   userAgent: 'Google Assistant App by /u/thatwolfisthetits',
-//   clientId: config.reddit.id,
-//   clientSecret: config.reddit.secret,
-//   refreshToken: config.reddit.refresh_token,
-// });
-
-const reddit = new snoowrap({
-  userAgent: 'Google Assistant App by /u/thatwolfisthetits',
-  clientId: functions.config().reddit.id,
-  clientSecret: functions.config().reddit.secret,
-  refreshToken: config.reddit.refresh_token
-});
-
 const whitelisted_sub = [
   'todayilearned', 'television', 'news', 'futurology', 'worldnews', 'environment',
-  'bitcoin', 'upliftingnews', 'science', 'nottheonion', 'europe']
+  'bitcoin', 'upliftingnews', 'science', 'nottheonion', 'showerthoughts',
+  'technology']
 
 let popularHandler = (assistant) => {
   const noOfPosts = assistant.getArgument(ARG_NO_OF_POSTS) || 10;
-  return reddit.getHot('popular', { limit: 500 })
+  return reddit.getHot('popular', { limit: 100 })
     .then(data => data.map(data => {
       // Map the array to only return the fields below for each element
       return {
@@ -64,23 +48,26 @@ let popularHandler = (assistant) => {
     })
     .then(data => {
       // Wrap the message in speak so that we can use break and say-as for a better speech synthesis
-      let message = ['<speak>Here are the top posts. <break time="1000ms"/>'];
+      let message = [`<speak>Here are the top ${noOfPosts} posts. <break time="1000ms"/>`];
       data.forEach(item => {
-        message.push(`On ${item.subreddit} with a score of <say-as interpret-as="cardinal">${Math.ceil(item.score / 100) * 100}</say-as> <break time="500ms"/>, ${item.title}.`);
+        // Say as "r slash" for the reddit feel
+        message.push(`On <say-as interpret-as="characters">r/</say-as>${item.subreddit} with a score of <say-as interpret-as="cardinal">${Math.ceil(item.score / 100) * 100}</say-as> <break time="500ms"/>, ${item.title}.`);
       });
       message.push('<break time="1000ms"/> That is all for now!</speak>');
       return message;
     })
-    .then(message => message.join(' <break time="1000ms"/> '))
+    .then(message => message.join(' <break time="1300ms"/> '))
     .then(message => {
       assistant.tell(message);
     })
     .catch(err => {
+      assistant.tell("Something went wrong, please try again later!");
       console.log(err);
+      return err;
     })
 }
 
-exports.getTrendingReddit = functions.https.onRequest((req, res) => {
+exports.getPopularReddit = functions.https.onRequest((req, res) => {
   const assistant = new ActionsSdkApp({ request: req, response: res });
 
   const actionMap = new Map();
