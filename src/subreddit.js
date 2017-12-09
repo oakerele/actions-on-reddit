@@ -52,7 +52,7 @@ let subredditHandler = (assistant) => {
       assistant.tell(message);
     })
     .catch(err => {
-      console.error(err);
+      console.error(`Error for ${subreddit}`);
       assistant.tell("Something went wrong, please try again later!");
     })
 }
